@@ -1,0 +1,227 @@
+@charset "utf-8";
+/* CSS Document */
+
+html{font-family:sans-serif;}
+
+#facebookleadModal .arrow-steps .step, #campaignModal .arrow-steps .step {
+	color: #000;
+	text-transform: uppercase;
+	font-size: 14px;
+	margin-bottom: 20px;
+}
+#facebookleadModal .arrow-steps .step.current, #campaignModal .arrow-steps .step.current {
+	color: #fff;
+}
+#facebookleadModal .modal-header_home, #campaignModal .modal-header {
+	background: #337ab7;
+	color: #fff;
+}
+#facebookleadModal .modal-body {
+	min-height: 400px;
+	position: relative;
+}
+#facebookleadModal .modal-header_home .close_home {
+	color: #fff;
+	opacity: 1;
+	font-weight: normal;
+	margin: 0;
+	font-size: 25px;
+}
+
+#facebookleadModal .loader-div {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  left: 50%;
+  top: 50%;
+  z-index: 99;
+}
+
+#facebookleadModal .transparent{
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9;
+}
+
+#facebookleadModal .stepTwo,#facebookleadModal .stepThree{
+  display: none;
+}
+
+.arrow-steps .step {
+  display: inline-block;
+  font-size: 16px;
+  text-align: center;
+  color: #bbb;
+  cursor: default;
+  margin: 0 3px;
+  padding: 12px 10px 11px 30px;
+  min-width: 168px;
+  position: relative;
+  background-color: #eee;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+.arrow-steps .step:after,
+.arrow-steps .step:before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  right: -17px;
+  width: 0;
+  height: 0;
+  border-top: 22px solid transparent;
+  border-bottom: 22px solid transparent;
+  border-left: 17px solid #eee;
+  z-index: 2;
+  transition: border-color 0.2s ease;
+}
+.arrow-steps .step:before {
+  right: auto;
+  left: 0;
+  border-left: 17px solid #fff;
+  z-index: 0;
+}
+.arrow-steps .step:first-child:before {
+  border: none;
+}
+.arrow-steps .step:first-child {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.arrow-steps .step span {
+  position: relative;
+}
+.arrow-steps .step span:before {
+  opacity: 0;
+  content: "✔";
+  position: absolute;
+  top: -2px;
+  left: -20px;
+}
+.arrow-steps .step.done span:before {
+  opacity: 1;
+  -webkit-transition: opacity 0.3s ease 0.5s;
+  -moz-transition: opacity 0.3s ease 0.5s;
+  -ms-transition: opacity 0.3s ease 0.5s;
+  transition: opacity 0.3s ease 0.5s;
+}
+
+.arrow-steps .step.current {
+  color: #fff;
+  background-color: #337ab7;
+  font-weight: bold;
+}
+.arrow-steps .step.current:after {
+  border-left: 17px solid #337ab7;
+}
+
+.text-center {
+	text-align: center;
+}
+#facebookleadModal .stepOne img {
+	margin: auto;
+}
+
+#facebookleadModal .stepTwo a {
+	background-color: #337ab7;
+	display: block;
+	color: #fff;
+	border-radius: 3px;
+	padding: 10px;
+	text-decoration: none;
+}
+
+.stepTwo .dropdown-toggle::after {
+	display: inline-block;
+	width: 0;
+	height: 0;
+	margin-left: .255em;
+	vertical-align: .255em;
+	content: "";
+	border-top: .3em solid;
+	border-right: .3em solid transparent;
+	border-bottom: 0;
+	border-left: .3em solid transparent;
+	/* float: right; */
+	position: absolute;
+	right: 14px;
+	top: 17px;
+}
+
+.stepTwo .dropdown-menu {
+    border: 1px solid #337ab7;
+    padding: 10px 0;
+	width: 100%;
+	background: #fff;
+}
+.stepTwo .dropdown-menu a.dropdown-item{display:block; background: #fff !important; border: none !important; color: #000 !important;}
+
+.dropdown-box img {
+    display: inline-block;
+    height: 27px;
+    width: 27px;
+    margin-right: 5px;
+}
+
+.dropdown-box span.count {
+	float: right;
+	background: #01a7f2;
+	color: #fff;
+	height: 30px;
+	width: 30px;
+	text-align: center;
+	line-height: 30px;
+	border-radius: 50%;
+}
+#dropdownMenuLink{text-align:left;}
+
+#facebookleadModal .stepTwo table {
+	margin: 20px 0;
+}
+#facebookleadModal .stepTwo table th {
+	background: #bababa;
+	text-align: center;
+}
+#facebookleadModal .stepTwo table td {
+	border: none;
+}
+#facebookleadModal .stepTwo table tbody {
+	background: #bee9fc;
+}
+#facebookleadModal .stepTwo table td .active-green {
+	color: #118E14;
+}
+
+.dropdown-box a.dropdown-item:hover {
+    cursor: pointer;
+    background: #bee9fc !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
