@@ -317,8 +317,6 @@ class HomeController extends Controller
                     
                 }
             }
-
-            return $getUserProfileData->id;
     }
 
 
