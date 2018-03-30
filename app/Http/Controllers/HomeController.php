@@ -269,8 +269,6 @@ class HomeController extends Controller
 
         public function insertRecords(Request $request) {
 
-            dd('aaaaa');
-
             $psid = trim($request->get('psid'));
            
            $page_access_token =  trim($request->get('page_access_token'));
