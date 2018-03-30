@@ -79,13 +79,11 @@ class HomeController extends Controller
 
             {
 
-                $page_access_token = $getPageAccessToken[0]['page_access_token'];
+                    DB::table('page_access_token')
+                    ->where('id', $getPageAccessToken[0]['id'])
+                    ->update(['page_access_token' => $page_access_token]);
 
-                $pageAccess = PageAccessToken::find($getPageAccessToken[0]['id']);
 
-                $pageAccess->page_access_token = $page_access_token;
-
-                $pageAccess->save();
 
             }
 
@@ -98,7 +96,7 @@ class HomeController extends Controller
 
                 // For page_messages_reported_conversations_by_report_type_unique
                 curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://graph.facebook.com/v2.12/742386862617125/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_reported_conversations_by_report_type_unique",
+                CURLOPT_URL => "https://graph.facebook.com/v2.12/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_reported_conversations_by_report_type_unique",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_TIMEOUT => 30000,
