@@ -15,9 +15,17 @@ class ApiController extends Controller
             $psid = trim($request->get('psid'));
            
             
-            $getPageAccessToken = PageAccessToken::all();
+           $getPageAccessToken = PageAccessToken::all();
+
+            if(count($getPageAccessToken) > 0 ) 
+            {
 
             $page_access_token = $getPageAccessToken[0]['page_access_token'];
+
+            } else {
+
+               $page_access_token = ''; 
+            }
 
 
 

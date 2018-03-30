@@ -70,7 +70,7 @@ class HomeController extends Controller
 
             $page_access_token = $getPageAccessToken[0]['page_access_token'];
 
-            if(!$page_access_token = '') 
+            if(count($getPageAccessToken) > 0 ) 
             {
 
                 PageAccessToken::create(['page_access_token' => $page_access_token]);
@@ -291,7 +291,15 @@ class HomeController extends Controller
             
             $getPageAccessToken = PageAccessToken::all();
 
+            if(count($getPageAccessToken) > 0 ) 
+            {
+
             $page_access_token = $getPageAccessToken[0]['page_access_token'];
+
+            } else {
+
+               $page_access_token = ''; 
+            }
 
 
 
@@ -345,7 +353,15 @@ class HomeController extends Controller
            
            $getPageAccessToken = PageAccessToken::all();
 
+            if(count($getPageAccessToken) > 0 ) 
+            {
+
             $page_access_token = $getPageAccessToken[0]['page_access_token'];
+
+            } else {
+
+               $page_access_token = ''; 
+            }
 
            $gerResult=[];
 
@@ -390,7 +406,15 @@ class HomeController extends Controller
            
        $getPageAccessToken = PageAccessToken::all();
 
-        $page_access_token = $getPageAccessToken[0]['page_access_token'];
+            if(count($getPageAccessToken) > 0 ) 
+            {
+
+            $page_access_token = $getPageAccessToken[0]['page_access_token'];
+
+            } else {
+
+               $page_access_token = ''; 
+            }
 
         $getDeleteResult = [];
 
