@@ -41,8 +41,6 @@ class FacebookPageController extends Controller
 
       $user_id = Auth::user()->id;
       $fb_user_id = Session::get('fb_user_id');
-
-      echo 'aaaaa'.$fb_user_id;
       foreach($request->response['data'] as $key =>$data){
           $page_name =  $data['name'];
           $page_id =  $data['id'];

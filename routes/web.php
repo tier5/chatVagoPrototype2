@@ -18,14 +18,14 @@ Route::post('store_user_data',['uses'=>'FacebookPageController@saveFacebookUser'
 Route::post('store_page_data',['uses'=>'FacebookPageController@saveFbUserPageData']);
 Route::any('getformcountbypage',['uses'=>'FacebookPageController@getFormCountByPage']);
 
+Route::get('/insertUser', 'ApiController@index')->name('insertUser');
+
 Auth::routes();
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
 Route::any('/', 'HomeController@index')->name('home');
-
-Route::post('/insertUser', 'HomeController@insertRecords')->name('insertUser');
 
 Route::post('/boardcast', 'HomeController@boadcast')->name('boardcast');
 

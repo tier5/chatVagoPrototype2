@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Model\FacebookUserPageDetail;
 use App\Model\FacebookBoardcastUserInfo;
+use App\Model\PageAccessToken;
 
 class HomeController extends Controller
 {
@@ -17,6 +18,22 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
+
+        $getPageAccessToken = PageAccessToken::all();
+
+        if(count($getPageAccessToken) > 0 ) 
+        {
+
+        $this->page_access_token = $getPageAccessToken[0]['page_access_token'];
+
+        } else {
+
+           $this->page_access_token = ''; 
+        }
+
+           
+
     }
 
     /**
@@ -28,7 +45,6 @@ class HomeController extends Controller
     {
         $fb_page_id = '';
         $oneWeekTime ='';
-        $page_access_token = '';
 
         $page_messages_reported_conversations_by_report_type_unique = [];
         $page_messages_new_conversations_unique = [];
@@ -36,12 +52,15 @@ class HomeController extends Controller
         $page_messages_blocked_conversations_unique =[];
         $page_messages_active_threads_unique =[];
 
+        $page_access_token = $this->page_access_token;
 
+        
         // For Facebook Broadcast
 
         $getBroadcastDetail = FacebookBoardcastUserInfo::all();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
 
             $todayTime = time();
 
@@ -64,6 +83,29 @@ class HomeController extends Controller
 
             $page_access_token = trim($request->get('page_access_token'));
 
+
+            $getPageAccessToken = PageAccessToken::all();
+
+
+            if(count($getPageAccessToken) == 0 ) 
+            {
+
+               PageAccessToken::create(['page_access_token' => $page_access_token]);
+
+            }
+            else 
+
+            {
+
+                    DB::table('page_access_token')
+                    ->where('id', $getPageAccessToken[0]['id'])
+                    ->update(['page_access_token' => $page_access_token]);
+
+
+
+            }
+
+
             // $getPageDetail = FacebookUserPageDetail::where('fb_page_id', $fb_page_id)->first();
 
             // if(count($getPageDetail) > 0) {
@@ -72,7 +114,7 @@ class HomeController extends Controller
 
                 // For page_messages_reported_conversations_by_report_type_unique
                 curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://graph.facebook.com/v2.12/742386862617125/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_reported_conversations_by_report_type_unique",
+                CURLOPT_URL => "https://graph.facebook.com/v2.12/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_reported_conversations_by_report_type_unique",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_TIMEOUT => 30000,
@@ -93,7 +135,15 @@ class HomeController extends Controller
 
                     if(array_key_exists('data', $report_type_unique)) {
 
+
+                        if(count($report_type_unique['data']) > 0) {
+
                         $page_messages_reported_conversations_by_report_type_unique = array_reverse($report_type_unique['data'][0]['values']);
+                    } else {
+
+                            $page_messages_reported_conversations_by_report_type_unique =[];
+
+                    }
 
                     } else {
 
@@ -125,8 +175,14 @@ class HomeController extends Controller
 
                     if(array_key_exists('data', $new_conversations_unique)) {
 
+                        if(count($new_conversations_unique['data']) > 0) {
 
                         $page_messages_new_conversations_unique = array_reverse($new_conversations_unique['data'][0]['values']);
+                     } else {
+
+                        $page_messages_new_conversations_unique = [];
+
+                     }
                     } else {
 
                         $page_messages_new_conversations_unique = [];
@@ -157,8 +213,13 @@ class HomeController extends Controller
 
                     if(array_key_exists('data', $open_conversations_unique)) {
 
+                        if(count($open_conversations_unique['data']) > 0) {
 
-                        $page_messages_open_conversations_unique = array_reverse($open_conversations_unique['data'][0]['values']);
+                            $page_messages_open_conversations_unique = array_reverse($open_conversations_unique['data'][0]['values']);
+                        } else {
+                            $page_messages_open_conversations_unique = [];
+
+                        }     
 
                     } else {
 
@@ -171,7 +232,7 @@ class HomeController extends Controller
                 // For page_messages_blocked_conversations_unique
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://graph.facebook.com/v2.12/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_blocked_conversations_unique",
+                CURLOPT_URL => "https://graph.facebook.com/v2.12/access_token/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_blocked_conversations_unique",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_TIMEOUT => 30000,
@@ -192,8 +253,15 @@ class HomeController extends Controller
 
                     if(array_key_exists('data', $blocked_conversations_unique)) {
 
+                        if(count($blocked_conversations_unique['data']) > 0) {
+
 
                         $page_messages_blocked_conversations_unique = array_reverse($blocked_conversations_unique['data'][0]['values']);
+                    }else{
+
+                        $page_messages_blocked_conversations_unique = [];
+
+                    }
 
                     } else {
 
@@ -225,7 +293,14 @@ class HomeController extends Controller
 
                     if(array_key_exists('data', $active_threads_unique)) {
 
+                        if(count($active_threads_unique['data']) > 0) {
+
                         $page_messages_active_threads_unique = array_reverse($active_threads_unique['data'][0]['values']);
+                    } else {
+
+                        $page_messages_active_threads_unique = [];
+
+                    }
 
                     } else {
 
@@ -247,32 +322,25 @@ class HomeController extends Controller
 
                 ));
 
+            
 
 
-                }else{
 
-                     return view('home', compact(
-                        'fb_page_id', '', 
-                        'oneWeekTime', $oneWeekTime, 
-                        'page_access_token', $page_access_token,
-                        'getBroadcastDetail', $getBroadcastDetail));   
-                }
-            // } else {
-            //          return view('home', compact(
-            //             'fb_page_id', '', 
-            //             'oneWeekTime', $oneWeekTime, 
-            //             'page_access_token', $page_access_token,
-            //             'getBroadcastDetail', $getBroadcastDetail
-            //         ));
-            // } 
+        } else{
+
+             return view('home', compact(
+                'fb_page_id', '', 
+                'oneWeekTime', $oneWeekTime, 
+                'page_access_token', $this->page_access_token,
+                'getBroadcastDetail', $getBroadcastDetail));   
+            } 
         }
 
         public function insertRecords(Request $request) {
 
             $psid = trim($request->get('psid'));
-           
-           $page_access_token =  trim($request->get('page_access_token'));
 
+            $page_access_token = $this->page_access_token;
 
 
            $curl = curl_init();
@@ -322,8 +390,7 @@ class HomeController extends Controller
 
     public function boadcast(Request $request) {
 
-           
-           $page_access_token =  trim($request->get('page_access_token'));
+        $page_access_token = $this->page_access_token;
 
            $gerResult=[];
 
@@ -355,19 +422,19 @@ class HomeController extends Controller
                     curl_close($ch);
                 if ($profile_error) {
 
-                    return $profile_error;
                 } else {
 
-                    return $jsonData;
+                    console.log($jsonData);
+
                 }
             }         
         }
 
     public function deleteUserRecords(Request $request) {
 
-           
-       $page_access_token =  trim($request->get('page_access_token'));
+        $page_access_token = $this->page_access_token;
 
+           
         $getDeleteResult = [];
 
         $getDeleteResult = explode(",", trim($request->get('chooseUser')));
