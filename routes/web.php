@@ -27,4 +27,6 @@ Route::any('/', 'HomeController@index')->name('home');
 
 Route::post('/insertUser', 'HomeController@insertRecords')->name('insertUser');
 
+Route::post('/boardcast', 'HomeController@boadcast')->name('boardcast');
+
 Route::any('/deleteusers', 'HomeController@deleteUserRecords')->name('deleteusers');
