@@ -17,7 +17,7 @@ class ApiController extends Controller
             
            $getPageAccessToken = PageAccessToken::all();
 
-            if(count($getPageAccessToken) > 0 ) 
+            if(count($getPageAccessToken) == 0 ) 
             {
 
             $page_access_token = $getPageAccessToken[0]['page_access_token'];

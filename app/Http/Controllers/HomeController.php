@@ -68,17 +68,18 @@ class HomeController extends Controller
 
             $getPageAccessToken = PageAccessToken::all();
 
-            $page_access_token = $getPageAccessToken[0]['page_access_token'];
 
-            if(count($getPageAccessToken) > 0 ) 
+            if(count($getPageAccessToken) == 0 ) 
             {
 
-                PageAccessToken::create(['page_access_token' => $page_access_token]);
+               PageAccessToken::create(['page_access_token' => $page_access_token]);
 
             }
             else 
 
             {
+
+                $page_access_token = $getPageAccessToken[0]['page_access_token'];
 
                 $pageAccess = PageAccessToken::find($getPageAccessToken[0]['id']);
 
@@ -291,10 +292,10 @@ class HomeController extends Controller
             
             $getPageAccessToken = PageAccessToken::all();
 
-            if(count($getPageAccessToken) > 0 ) 
+            if(count($getPageAccessToken) == 0 ) 
             {
 
-            $page_access_token = $getPageAccessToken[0]['page_access_token'];
+             $page_access_token = $getPageAccessToken[0]['page_access_token'];
 
             } else {
 
@@ -353,10 +354,10 @@ class HomeController extends Controller
            
            $getPageAccessToken = PageAccessToken::all();
 
-            if(count($getPageAccessToken) > 0 ) 
+            if(count($getPageAccessToken) == 0 ) 
             {
 
-            $page_access_token = $getPageAccessToken[0]['page_access_token'];
+             $page_access_token = $getPageAccessToken[0]['page_access_token'];
 
             } else {
 
@@ -406,10 +407,10 @@ class HomeController extends Controller
            
        $getPageAccessToken = PageAccessToken::all();
 
-            if(count($getPageAccessToken) > 0 ) 
+            if(count($getPageAccessToken) == 0 ) 
             {
 
-            $page_access_token = $getPageAccessToken[0]['page_access_token'];
+             $page_access_token = $getPageAccessToken[0]['page_access_token'];
 
             } else {
 
