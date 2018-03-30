@@ -289,12 +289,8 @@ class HomeController extends Controller
                 $profile_error = curl_error($curl);
                 curl_close($curl);
                 if ($profile_error) {
-                 return "Someting went wrong!";
                 } else {
-
-                    return "Data Insert";
                     
-
                     $getUserProfileData = json_decode($profile_response);
 
                     if(array_key_exists('first_name', $getUserProfileData)) {
@@ -311,14 +307,14 @@ class HomeController extends Controller
                             'psid' => $psid
                         ]);
                     }
-
-                    return "Message Successfully Send!";
                     
                 } else {
 
-                    return "Invaid Data!";
+                    
                 }
             }
+
+            return view('home');
     }
 
 

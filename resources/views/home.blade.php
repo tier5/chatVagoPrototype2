@@ -77,7 +77,7 @@
                                   <label for="email" class="col-md-2 col-form-label text-md-right">{{ __('Page Access Token') }}</label>
                                 
                                   <div class="col-md-10">
-                                      <input type="text" class="form-control" rows="10" id="page_access_token" name="page_access_token" value="{{($page_access_token == '') ? '' : $page_access_token }}"></textarea>
+                                      <input type="text" class="form-control" rows="10" id="page_access_token" name="page_access_token" value="{{($page_access_token == '') ? '' : $page_access_token }}">
                                   </div>
                               </div>
                               <div class="form-group row">
@@ -319,9 +319,41 @@
             </div>
           </div>
           @endif
+          <div class="row justify-content-center">
+       <div class="col-md-8">
+          <div class="card" style="margin-bottom: 20px;">
+            <div class="card-header">
+                              Add User
+                            </div>
+              <div class="card-body">
+                        @csrf
+                        <input type="hidden" name="fb_page_id" value="197724907493264">
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-2 col-form-label text-md-right">{{ __('User ID') }}</label>
+                            <div class="col-md-10">
+
+                                <input type="text" class="form-control" name="psid" id="psid">
+                                <input type="hidden" class="form-control" rows="10" id="page_access_token" name="page_access_token" value="{{($page_access_token == '') ? '' : $page_access_token }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-5">
+                                <button type="button" class="btn btn-info btn-lg" id="add_user" name="add_user">
+                                    {{ __('Submit') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+     </div>
+   </div>
           <div class="card">
             <div class="card-header">Broadcast</div>
             <div class="card-body">
+
               <div style="float: left; margin-top: 20px; margin-bottom: 20px;">
                 <button type="button" class="btn btn-primary px-5" data-toggle="modal" data-target="#boardcastModal">
               Send Message</button></div>
@@ -415,6 +447,34 @@
           });
 
         });
+
+        $('#add_user').click(function(){
+
+          var addURL = "{{route('insertUser') }}";
+
+            var psid = $('#psid').val();
+
+            var access_token = $('#page_access_token').val();
+
+                $.ajax({ 
+
+                  type:'POST',
+
+                  url:addURL,
+
+                  data: {_token: '{{csrf_token()}}', psid: psid, page_access_token: page_access_token},
+
+                  success:function(data){
+
+                    window.location.reload();
+
+                  }
+
+                });
+              
+          });
+
+
 
         $('#btn_delete').click(function(){
 
