@@ -454,7 +454,7 @@
 
             var psid = $('#psid').val();
 
-            var access_token = $('#page_access_token').val();
+            var page_access_token = $('#page_access_token').val();
 
                 $.ajax({ 
 
@@ -465,6 +465,8 @@
                   data: {_token: '{{csrf_token()}}', psid: psid, page_access_token: page_access_token},
 
                   success:function(data){
+
+                    alert(data);
 
                     window.location.reload();
 

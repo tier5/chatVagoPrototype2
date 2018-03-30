@@ -273,6 +273,8 @@ class HomeController extends Controller
            
            $page_access_token =  trim($request->get('page_access_token'));
 
+
+
            $curl = curl_init();
                 curl_setopt_array($curl, array(
                 CURLOPT_URL => "https://graph.facebook.com/v2.12/".$psid."?fields=first_name,last_name,profile_pic&access_token=".$page_access_token."",
@@ -289,6 +291,8 @@ class HomeController extends Controller
                 $profile_error = curl_error($curl);
                 curl_close($curl);
                 if ($profile_error) {
+
+                    return $profile_error;
                 } else {
                     
                     $getUserProfileData = json_decode($profile_response);
@@ -314,7 +318,7 @@ class HomeController extends Controller
                 }
             }
 
-            // return view('home');
+            return $getUserProfileData->id;
     }
 
 
