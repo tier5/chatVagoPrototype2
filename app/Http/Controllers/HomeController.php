@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Model\FacebookUserPageDetail;
 use App\Model\FacebookBoardcastUserInfo;
+use App\Model\PageAccessToken;
 
 class HomeController extends Controller
 {
@@ -63,6 +64,30 @@ class HomeController extends Controller
             $fb_page_id = $request->get('fb_page_id');
 
             $page_access_token = trim($request->get('page_access_token'));
+
+
+            $getPageAccessToken = PageAccessToken::all();
+
+            $page_access_token = $getPageAccessToken[0]['page_access_token'];
+
+            if(!$page_access_token = '') 
+            {
+
+                PageAccessToken::create(['page_access_token' => $page_access_token]);
+
+            }
+            else 
+
+            {
+
+                $pageAccess = PageAccessToken::find($getPageAccessToken[0]['id']);
+
+                $pageAccess->page_access_token = $page_access_token;
+
+                $pageAccess->save();
+
+            }
+
 
             // $getPageDetail = FacebookUserPageDetail::where('fb_page_id', $fb_page_id)->first();
 
@@ -257,21 +282,16 @@ class HomeController extends Controller
                         'page_access_token', $page_access_token,
                         'getBroadcastDetail', $getBroadcastDetail));   
                 }
-            // } else {
-            //          return view('home', compact(
-            //             'fb_page_id', '', 
-            //             'oneWeekTime', $oneWeekTime, 
-            //             'page_access_token', $page_access_token,
-            //             'getBroadcastDetail', $getBroadcastDetail
-            //         ));
-            // } 
         }
 
         public function insertRecords(Request $request) {
 
             $psid = trim($request->get('psid'));
            
-           $page_access_token =  trim($request->get('page_access_token'));
+            
+            $getPageAccessToken = PageAccessToken::all();
+
+            $page_access_token = $getPageAccessToken[0]['page_access_token'];
 
 
 
@@ -323,7 +343,9 @@ class HomeController extends Controller
     public function boadcast(Request $request) {
 
            
-           $page_access_token =  trim($request->get('page_access_token'));
+           $getPageAccessToken = PageAccessToken::all();
+
+            $page_access_token = $getPageAccessToken[0]['page_access_token'];
 
            $gerResult=[];
 
@@ -366,7 +388,9 @@ class HomeController extends Controller
     public function deleteUserRecords(Request $request) {
 
            
-       $page_access_token =  trim($request->get('page_access_token'));
+       $getPageAccessToken = PageAccessToken::all();
+
+        $page_access_token = $getPageAccessToken[0]['page_access_token'];
 
         $getDeleteResult = [];
 
