@@ -313,6 +313,7 @@
           </div>
           @endif
    </div>
+   <div class="row justify-content-center">
           <div class="card">
             <div class="card-header">Broadcast</div>
             <div class="card-body">
@@ -349,6 +350,8 @@
             </div>
           </div>
 
+
+</div>
           </div>
         </div>
       </div>
