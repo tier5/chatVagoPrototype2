@@ -19,17 +19,20 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
 
-           $getPageAccessToken = PageAccessToken::all();
 
-            if(count($getPageAccessToken) > 0 ) 
-            {
+        $getPageAccessToken = PageAccessToken::all();
 
-            $page_access_token = $getPageAccessToken[0]['page_access_token'];
+        if(count($getPageAccessToken) > 0 ) 
+        {
 
-            } else {
+        $this->page_access_token = $getPageAccessToken[0]['page_access_token'];
 
-               $page_access_token = ''; 
-            }
+        } else {
+
+           $this->page_access_token = ''; 
+        }
+
+           
 
     }
 
@@ -49,9 +52,9 @@ class HomeController extends Controller
         $page_messages_blocked_conversations_unique =[];
         $page_messages_active_threads_unique =[];
 
-        $getPageAccessToken = PageAccessToken::all();
+        $page_access_token = $this->page_access_token;
 
-          
+        
         // For Facebook Broadcast
 
         $getBroadcastDetail = FacebookBoardcastUserInfo::all();
@@ -328,7 +331,7 @@ class HomeController extends Controller
              return view('home', compact(
                 'fb_page_id', '', 
                 'oneWeekTime', $oneWeekTime, 
-                'page_access_token', $page_access_token,
+                'page_access_token', $this->page_access_token,
                 'getBroadcastDetail', $getBroadcastDetail));   
             } 
         }
@@ -336,6 +339,8 @@ class HomeController extends Controller
         public function insertRecords(Request $request) {
 
             $psid = trim($request->get('psid'));
+
+            $page_access_token = $this->page_access_token;
 
 
            $curl = curl_init();
@@ -385,6 +390,8 @@ class HomeController extends Controller
 
     public function boadcast(Request $request) {
 
+        $page_access_token = $this->page_access_token;
+
            $gerResult=[];
 
            $getResult = explode(",", trim($request->get('chooseUser')));
@@ -424,6 +431,8 @@ class HomeController extends Controller
         }
 
     public function deleteUserRecords(Request $request) {
+
+        $page_access_token = $this->page_access_token;
 
            
         $getDeleteResult = [];
