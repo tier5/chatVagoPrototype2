@@ -27,6 +27,8 @@ Route::get('/', function () {
 });
 Route::any('/', 'HomeController@index')->name('home');
 
+Route::any('/getAnalytics', 'HomeController@getAnalytics')->name('getAnalytics');
+
 Route::post('/boardcast', 'HomeController@boadcast')->name('boardcast');
 
 Route::any('/deleteusers', 'HomeController@deleteUserRecords')->name('deleteusers');

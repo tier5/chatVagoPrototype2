@@ -21,20 +21,6 @@ class HomeController extends Controller
         $this->middleware('auth');
 
 
-        $getPageAccessToken = PageAccessToken::all();
-
-        if(count($getPageAccessToken) > 0 ) 
-        {
-
-        $this->page_access_token = $getPageAccessToken[0]['page_access_token'];
-
-        } else {
-
-           $this->page_access_token = ''; 
-        }
-
-           
-
     }
 
     /**
@@ -58,7 +44,20 @@ class HomeController extends Controller
 
         $pageScopeUserId = '';
 
-        $page_access_token = $this->page_access_token;
+
+        $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
+
+        if(count($getPageAccessToken) > 0 ) 
+        {
+
+            $page_access_token = $getPageAccessToken['page_access_token'];
+
+        } else {
+
+            $page_access_token = ''; 
+        }
+
+        //$page_access_token = $this->page_access_token;
 
         //dd(Auth::user()->id);
 
@@ -100,13 +99,15 @@ class HomeController extends Controller
             $page_access_token = trim($request->get('page_access_token'));
 
 
-            $getPageAccessToken = PageAccessToken::all();
+            $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
 
 
             if(count($getPageAccessToken) == 0 ) 
             {
 
-               PageAccessToken::create(['page_access_token' => $page_access_token]);
+               //PageAccessToken::create(['page_access_token' => $page_access_token, 'user_id' => Auth::user()->id ]);
+
+                DB::table('page_access_token')->insert(['page_access_token' => $page_access_token, 'user_id' => Auth::user()->id]);
 
             }
             else 
@@ -114,7 +115,8 @@ class HomeController extends Controller
             {
 
                     DB::table('page_access_token')
-                    ->where('id', $getPageAccessToken[0]['id'])
+                    ->where('id', $getPageAccessToken['id'])
+                    ->where('user_id', Auth::user()->id)
                     ->update(['page_access_token' => $page_access_token]);
 
 
@@ -385,7 +387,7 @@ class HomeController extends Controller
              return view('home', compact(
                 'fb_page_id', '', 
                 'oneWeekTime', $oneWeekTime, 
-                'page_access_token', $this->page_access_token,
+                'page_access_token', $page_access_token,
                 'pageScopeUserId', $pageScopeUserId,
                 'logged_userId', $logged_userId,
                 'getBroadcastDetail', $getBroadcastDetail));   
@@ -396,7 +398,17 @@ class HomeController extends Controller
 
             $psid = trim($request->get('psid'));
 
-            $page_access_token = $this->page_access_token;
+            $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
+
+            if(count($getPageAccessToken) > 0 ) 
+            {
+
+                $page_access_token = $getPageAccessToken['page_access_token'];
+
+            } else {
+
+                $page_access_token = ''; 
+            }
 
 
            $curl = curl_init();
@@ -446,7 +458,17 @@ class HomeController extends Controller
 
     public function boadcast(Request $request) {
 
-        $page_access_token = $this->page_access_token;
+            $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
+
+            if(count($getPageAccessToken) > 0 ) 
+            {
+
+                $page_access_token = $getPageAccessToken['page_access_token'];
+
+            } else {
+
+                $page_access_token = ''; 
+            }
 
            $gerResult=[];
 
@@ -465,7 +487,17 @@ class HomeController extends Controller
 
         function sendMessageText($userId, $getMessage) {
 
-            $page_access_token = $this->page_access_token;
+            $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
+
+            if(count($getPageAccessToken) > 0 ) 
+            {
+
+                $page_access_token = $getPageAccessToken['page_access_token'];
+
+            } else {
+
+                $page_access_token = ''; 
+            }
 
             $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$page_access_token;
                     $ch = curl_init($url);
@@ -494,7 +526,17 @@ class HomeController extends Controller
 
     public function deleteUserRecords(Request $request) {
 
-        $page_access_token = $this->page_access_token;
+        $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
+
+        if(count($getPageAccessToken) > 0 ) 
+        {
+
+            $page_access_token = $getPageAccessToken['page_access_token'];
+
+        } else {
+
+            $page_access_token = ''; 
+        }
 
            
         $getDeleteResult = [];

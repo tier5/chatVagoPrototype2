@@ -10,23 +10,25 @@ use App\Model\PageAccessToken;
 
 class ApiController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request, $userId) {
 
             $psid = trim($request->get('psid'));
 
-            $userid = trim($request->get('userid'));
+            // $userid = $request->input('user_id');
+
+            // dd($userid );
            
             
-           $getPageAccessToken = PageAccessToken::all();
+            $getPageAccessToken = PageAccessToken::where('user_id', $userId)->first();
 
             if(count($getPageAccessToken) > 0 ) 
             {
 
-            $page_access_token = $getPageAccessToken[0]['page_access_token'];
+                $page_access_token = $getPageAccessToken['page_access_token'];
 
             } else {
 
-               $page_access_token = ''; 
+                $page_access_token = ''; 
             }
 
 
@@ -60,7 +62,7 @@ class ApiController extends Controller
                     if(count($getBroadcastuser) == 0) {
 
                         FacebookBoardcastUserInfo::create([
-                            'user_id' => $userid,
+                            'user_id' => $userId,
                             'first_name' => $getUserProfileData->first_name,
                             'last_name' =>  $getUserProfileData->last_name,
                             'profile_picture' => $getUserProfileData->profile_pic,
