@@ -52,6 +52,8 @@ class HomeController extends Controller
         $page_messages_blocked_conversations_unique =[];
         $page_messages_active_threads_unique =[];
 
+        $pageScopeUserId = '';
+
         $page_access_token = $this->page_access_token;
 
         
@@ -286,7 +288,7 @@ class HomeController extends Controller
                 $err5 = curl_error($curl);
                 curl_close($curl);
 
-                if ($err4) {
+                if ($err5) {
                 echo "cURL Error #:" . $err5;
                 } else {
                 $active_threads_unique = json_decode($response5, true);
@@ -309,6 +311,42 @@ class HomeController extends Controller
                     
                 }
 
+
+                // get Page scope user id 
+                
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                CURLOPT_URL => "https://graph.facebook.com/v2.12/me?fields=id,name&access_token=".$page_access_token."",
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_TIMEOUT => 30000,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+                ),
+                ));
+                $response_scope = curl_exec($curl);
+                $err6 = curl_error($curl);
+                curl_close($curl);
+
+                if ($err6) {
+                echo "cURL Error #:" . $err6;
+                } else {
+                $page_scope = json_decode($response_scope, true);
+
+                    if(array_key_exists('name', $page_scope)) {
+
+                        $pageScopeUserId = $page_scope['id'];
+
+
+                    } else {
+
+                        $pageScopeUserId = '';
+                    }
+                    
+                }
+
                 return view('home', compact('fb_page_id', $fb_page_id,
                     'page_messages_reported_conversations_by_report_type_unique', 
                     $page_messages_reported_conversations_by_report_type_unique,
@@ -318,7 +356,8 @@ class HomeController extends Controller
                     'page_messages_active_threads_unique', $page_messages_active_threads_unique,
                     'oneWeekTime', $oneWeekTime,
                     'page_access_token', $page_access_token,
-                    'getBroadcastDetail', $getBroadcastDetail
+                    'getBroadcastDetail', $getBroadcastDetail,
+                    'pageScopeUserId', $pageScopeUserId
 
                 ));
 
@@ -332,6 +371,7 @@ class HomeController extends Controller
                 'fb_page_id', '', 
                 'oneWeekTime', $oneWeekTime, 
                 'page_access_token', $this->page_access_token,
+                'pageScopeUserId', $pageScopeUserId,
                 'getBroadcastDetail', $getBroadcastDetail));   
             } 
         }
