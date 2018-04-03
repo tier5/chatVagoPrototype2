@@ -51,8 +51,6 @@ class ApiController extends Controller
                     
                     $getUserProfileData = json_decode($profile_response);
 
-                    dd($getUserProfileData);
-
                     if(array_key_exists('first_name', $getUserProfileData)) {
 
                     $getBroadcastuser = FacebookBoardcastUserInfo::where('fb_id', $getUserProfileData->id)->first();
