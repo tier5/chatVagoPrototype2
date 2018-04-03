@@ -214,11 +214,19 @@ class HomeController extends Controller
                     if(array_key_exists('data', $open_conversations_unique)) {
 
                         if(count($open_conversations_unique['data']) > 0) {
+<<<<<<< HEAD
 
                             $page_messages_open_conversations_unique = array_reverse($open_conversations_unique['data'][0]['values']);
                         } else {
                             $page_messages_open_conversations_unique = [];
 
+=======
+
+                            $page_messages_open_conversations_unique = array_reverse($open_conversations_unique['data'][0]['values']);
+                        } else {
+                            $page_messages_open_conversations_unique = [];
+
+>>>>>>> 6112ce98f476751ea9f07c104d5a49c907da9ac8
                         }     
 
                     } else {
@@ -232,7 +240,7 @@ class HomeController extends Controller
                 // For page_messages_blocked_conversations_unique
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://graph.facebook.com/v2.12/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_blocked_conversations_unique",
+                CURLOPT_URL => "https://graph.facebook.com/v2.12/access_token/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_blocked_conversations_unique",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_TIMEOUT => 30000,
@@ -422,10 +430,10 @@ class HomeController extends Controller
                     curl_close($ch);
                 if ($profile_error) {
 
-                    return $profile_error;
                 } else {
 
-                    return $jsonData;
+                    console.log($jsonData);
+
                 }
             }         
         }

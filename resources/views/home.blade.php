@@ -140,7 +140,7 @@
           </div>
             </div>
 
-              @if($fb_page_id != '')
+            @if($fb_page_id != '')
             <div class="card" style="margin-bottom: 30px;">
               <div class="card-header">Analytics</div>
               <div class="card-body">
@@ -406,6 +406,8 @@
              data:{_token: '{{csrf_token()}}', getMesg: getMesg, chooseUser: chooseUser.join(",")},
 
              success:function(data){
+
+              alert(data);
 
              }
 
