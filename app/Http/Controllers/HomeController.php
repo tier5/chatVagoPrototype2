@@ -458,12 +458,20 @@ class HomeController extends Controller
 
                 foreach ($getResult as $userInfo)
                 {
+                    $this->sendMessageText($userInfo, $getMessage);
+                    
+                }         
+            }
 
-                    $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$page_access_token;
+        function sendMessageText($userId, $getMessage) {
+
+            $page_access_token = $this->page_access_token;
+
+            $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$page_access_token;
                     $ch = curl_init($url);
                     $jsonData = '{
                     "recipient":{
-                    "id":"'.$userInfo.'"
+                    "id":"'.$userId.'"
                     },
                     "message":{
                     "text":"'.$getMessage .'"
@@ -481,7 +489,7 @@ class HomeController extends Controller
                 } else {
 
                 }
-            }         
+
         }
 
     public function deleteUserRecords(Request $request) {
