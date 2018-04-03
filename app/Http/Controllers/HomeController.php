@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Auth;
 use App\Model\FacebookUserPageDetail;
 use App\Model\FacebookBoardcastUserInfo;
 use App\Model\PageAccessToken;
@@ -43,8 +44,11 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
+
+        //dd(Auth::user()->id);
         $fb_page_id = '';
         $oneWeekTime ='';
+        $logged_userId = '';
 
         $page_messages_reported_conversations_by_report_type_unique = [];
         $page_messages_new_conversations_unique = [];
@@ -56,11 +60,21 @@ class HomeController extends Controller
 
         $page_access_token = $this->page_access_token;
 
-        
+        //dd(Auth::user()->id);
+
+        if(Auth::user()->id != '') {
+
+            $getBroadcastDetail = FacebookBoardcastUserInfo::where('user_id', Auth::user()->id)->get();
+
+        } else  {
+
+            $getBroadcastDetail = [];
+
+        }
+
         // For Facebook Broadcast
 
-        $getBroadcastDetail = FacebookBoardcastUserInfo::all();
-
+        
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
@@ -357,6 +371,7 @@ class HomeController extends Controller
                     'oneWeekTime', $oneWeekTime,
                     'page_access_token', $page_access_token,
                     'getBroadcastDetail', $getBroadcastDetail,
+                    'logged_userId', $logged_userId,
                     'pageScopeUserId', $pageScopeUserId
 
                 ));
@@ -372,6 +387,7 @@ class HomeController extends Controller
                 'oneWeekTime', $oneWeekTime, 
                 'page_access_token', $this->page_access_token,
                 'pageScopeUserId', $pageScopeUserId,
+                'logged_userId', $logged_userId,
                 'getBroadcastDetail', $getBroadcastDetail));   
             } 
         }
@@ -438,7 +454,7 @@ class HomeController extends Controller
 
             $getMessage = trim($request->get('getMesg'));
 
-            $getBroadcastDetail = FacebookBoardcastUserInfo::all();
+            $getBroadcastDetail = FacebookBoardcastUserInfo::where('user_id', Auth::user()->id)->get();
 
                 foreach ($getResult as $userInfo)
                 {
@@ -463,8 +479,6 @@ class HomeController extends Controller
                 if ($profile_error) {
 
                 } else {
-
-                    console.log($jsonData);
 
                 }
             }         

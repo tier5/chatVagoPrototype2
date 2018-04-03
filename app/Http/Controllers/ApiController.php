@@ -13,6 +13,8 @@ class ApiController extends Controller
     public function index(Request $request) {
 
             $psid = trim($request->get('psid'));
+
+            $userid = trim($request->get('userid'));
            
             
            $getPageAccessToken = PageAccessToken::all();
@@ -58,6 +60,7 @@ class ApiController extends Controller
                     if(count($getBroadcastuser) == 0) {
 
                         FacebookBoardcastUserInfo::create([
+                            'user_id' => $userid,
                             'first_name' => $getUserProfileData->first_name,
                             'last_name' =>  $getUserProfileData->last_name,
                             'profile_picture' => $getUserProfileData->profile_pic,
