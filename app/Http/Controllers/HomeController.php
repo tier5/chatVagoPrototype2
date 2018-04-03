@@ -214,19 +214,11 @@ class HomeController extends Controller
                     if(array_key_exists('data', $open_conversations_unique)) {
 
                         if(count($open_conversations_unique['data']) > 0) {
-<<<<<<< HEAD
 
                             $page_messages_open_conversations_unique = array_reverse($open_conversations_unique['data'][0]['values']);
                         } else {
                             $page_messages_open_conversations_unique = [];
 
-=======
-
-                            $page_messages_open_conversations_unique = array_reverse($open_conversations_unique['data'][0]['values']);
-                        } else {
-                            $page_messages_open_conversations_unique = [];
-
->>>>>>> 6112ce98f476751ea9f07c104d5a49c907da9ac8
                         }     
 
                     } else {
