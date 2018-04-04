@@ -31,4 +31,6 @@ Route::any('/getAnalytics', 'HomeController@getAnalytics')->name('getAnalytics')
 
 Route::post('/boardcast', 'HomeController@boadcast')->name('boardcast');
 
+Route::post('/messenger_image', 'HomeController@getMessengerImage')->name('messenger_image');
+
 Route::any('/deleteusers', 'HomeController@deleteUserRecords')->name('deleteusers');

@@ -351,14 +351,56 @@
             </div>
           </div>
 
+          <div class="col-md-8" style="margin-top: 50px;">
+            <div class="card" style="margin-bottom: 30px;">
+                <div class="card-header">Messenger Code</div>
+                <div class="card-body">
+                <div class="alert alert-danger" id="showErrorMessage">
+                </div>
+                  <div class="form-group row">
+                            <label for="ref" class="col-md-2 col-form-label text-md-right">Data Ref</label>
+                            <div class="col-md-10">
+                              <input type="text" name="messenger_ref" id="messenger_ref" class="form-control">
+                            </div>
+                  </div>
+                   <div class="form-group row">
+                      <label for="ref" class="col-md-2 col-form-label text-md-right">Image Size Range (Supported range: 100-2000 px)</label>
+                      <div class="col-md-10">
+                        <input type="text" name="image_size" id="image_size" class="form-control">
+                      </div>
+                  </div>
 
-</div>
+                  <div class="form-group row">
+                      <label for="ref" class="col-md-2 col-form-label text-md-right">Image</label>
+                      <div class="col-md-10">
+                        <img src="" id="messengerImage" width="500" height="500" />
+                      </div>
+                  </div>
+
+                  <div class="form-group row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                      <button type="button" class="btn btn-info btn-lg" id="generateMessagerImage">Generate</button> 
+                      <button type="button" class="btn btn-info btn-lg" id="downloadImage">Download Image</button>
+                    </div>
+
+                  </div>
+                  <div class="loader" id="modalLoader"></div>
+                </div>
+              </div>
+
+            
           </div>
         </div>
       </div>
+    </div>
+  </div>
 </div>
 <script type="text/javascript">
     $( document).ready(function() {
+
+      $('#showErrorMessage').hide();
+      $('#downloadImage').hide();
+      $('#modalLoader').hide();
 
       $('#ckbCheckAll').click(function(){
           if (this.checked == false) {
@@ -387,6 +429,55 @@
             }
         });
 
+        $("#generateMessagerImage").click(function(){
+        var messengerURL = "{{route('messenger_image') }}";
+        var messenger_ref = $('#messenger_ref').val();
+        var image_size = $('#image_size').val();
+
+        if(messenger_ref == '') {
+
+          $('#showErrorMessage').show();
+          $('#showErrorMessage').text('Please enter data ref');
+
+          } else if(image_size != '' && image_size < 100 || image_size > 2000) { 
+
+           $('#showErrorMessage').show();
+            $('#showErrorMessage').text('supported range: 100-2000 px');
+          }
+          else {
+
+            //$('#messengerImage').attr("src", 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPIzMxDNjQ_x4iUZ6WLo9R32QKCreu8PQGxcRHWmUw4hNcYmiR');
+              $('#modalLoader').show();
+
+              $.ajax({
+
+               type:'POST',
+
+               url:messengerURL,
+
+               data:{_token: '{{csrf_token()}}', messenger_ref: messenger_ref, image_size: image_size},
+
+               success:function(data){
+
+                $('#downloadImage').show();
+
+                $('#modalLoader').hide();
+
+               var jsonData = JSON.parse(data);
+
+               var getTotalImagePath = jsonData.uri;
+
+               $('#messengerImage').attr("src", getTotalImagePath);
+
+               }
+
+            });
+
+            }
+        });
+
+        // Messenger Image Code Generate
+        
         $("#sendMessage").click(function(){
         var chooseUser = [];
         var postURL = "{{route('boardcast') }}";
