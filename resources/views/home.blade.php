@@ -317,7 +317,7 @@
           <div class="card">
             <div class="card-header">Broadcast</div>
             <div class="card-body">
-              <h4 class="row justify-content-center"><!-- API LINK : https://chatvago.tier5-development.us/{{ Auth::user()->id }}/insertUser?psid={{($pageScopeUserId == '') ? 'PSID' : $pageScopeUserId}} --></h4>
+              <h4 class="row justify-content-center">API LINK : https://chatvago.tier5-development.us/{{ Auth::user()->id }}/insertUser?psid={{($pageScopeUserId == '') ? 'PSID' : $pageScopeUserId}}</h4>
 
               <div style="float: left; margin-top: 20px; margin-bottom: 20px;">
                 <button type="button" class="btn btn-primary px-5" data-toggle="modal" data-target="#boardcastModal">
