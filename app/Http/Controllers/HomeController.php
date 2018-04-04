@@ -478,26 +478,18 @@ class HomeController extends Controller
 
             $getBroadcastDetail = FacebookBoardcastUserInfo::where('user_id', Auth::user()->id)->get();
 
+            $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$page_access_token;
+            $ch = curl_init($url);
+
                 foreach ($getResult as $userInfo)
                 {
-                    $this->sendMessageText($userInfo, $getMessage, $page_access_token);
                     
-                }         
-            }
+                    $jsonData[]['recipient']['id'] = $userInfo;
+                    $jsonData[]['message']['text'] = $getMessage;
+                }
 
-        function sendMessageText($userId, $getMessage, $page_access_token) {
 
-            $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$page_access_token;
-                    $ch = curl_init($url);
-                    $jsonData = '{
-                    "recipient":{
-                    "id":"'.$userId.'"
-                    },
-                    "message":{
-                    "text":"'.$getMessage .'"
-                    }
-                    }';
-                    $jsonDataEncoded = $jsonData;
+                $jsonDataEncoded = json_encode($jsonData);
                     curl_setopt($ch, CURLOPT_POST, 1);
                     curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonDataEncoded);
                     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
@@ -510,7 +502,8 @@ class HomeController extends Controller
 
                 }
 
-        }
+
+            }
 
     public function deleteUserRecords(Request $request) {
 
