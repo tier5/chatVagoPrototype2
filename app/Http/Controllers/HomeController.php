@@ -478,9 +478,6 @@ class HomeController extends Controller
 
             $getBroadcastDetail = FacebookBoardcastUserInfo::where('user_id', Auth::user()->id)->get();
 
-            $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$page_access_token;
-            $ch = curl_init($url);
-
                 foreach ($getResult as $userInfo)
                 {
                     
@@ -488,6 +485,8 @@ class HomeController extends Controller
                     $jsonData[]['message']['text'] = $getMessage;
                 }
 
+                $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$page_access_token;
+                $ch = curl_init($url);
 
                 $jsonDataEncoded = json_encode($jsonData);
                     curl_setopt($ch, CURLOPT_POST, 1);
