@@ -18,7 +18,7 @@ Route::post('store_user_data',['uses'=>'FacebookPageController@saveFacebookUser'
 Route::post('store_page_data',['uses'=>'FacebookPageController@saveFbUserPageData']);
 Route::any('getformcountbypage',['uses'=>'FacebookPageController@getFormCountByPage']);
 
-Route::get('/insertUser', 'ApiController@index')->name('insertUser');
+Route::get('{user_id}/insertUser', 'ApiController@index')->name('insertUser');
 
 Auth::routes();
 

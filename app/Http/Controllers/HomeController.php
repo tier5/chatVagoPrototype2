@@ -394,66 +394,66 @@ class HomeController extends Controller
             } 
         }
 
-        public function insertRecords(Request $request) {
+    //     public function insertRecords(Request $request) {
 
-            $psid = trim($request->get('psid'));
+    //         $psid = trim($request->get('psid'));
 
-            $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
+    //         $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
 
-            if(count($getPageAccessToken) > 0 ) 
-            {
+    //         if(count($getPageAccessToken) > 0 ) 
+    //         {
 
-                $page_access_token = $getPageAccessToken['page_access_token'];
+    //             $page_access_token = $getPageAccessToken['page_access_token'];
 
-            } else {
+    //         } else {
 
-                $page_access_token = ''; 
-            }
+    //             $page_access_token = ''; 
+    //         }
 
 
-           $curl = curl_init();
-                curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://graph.facebook.com/v2.12/".$psid."?fields=first_name,last_name,profile_pic&access_token=".$page_access_token."",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_TIMEOUT => 30000,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-                CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json',
-                ),
-                ));
-                $profile_response = curl_exec($curl);
-                $profile_error = curl_error($curl);
-                curl_close($curl);
-                if ($profile_error) {
+    //        $curl = curl_init();
+    //             curl_setopt_array($curl, array(
+    //             CURLOPT_URL => "https://graph.facebook.com/v2.12/".$psid."?fields=first_name,last_name,profile_pic&access_token=".$page_access_token."",
+    //             CURLOPT_RETURNTRANSFER => true,
+    //             CURLOPT_ENCODING => "",
+    //             CURLOPT_TIMEOUT => 30000,
+    //             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    //             CURLOPT_CUSTOMREQUEST => "GET",
+    //             CURLOPT_HTTPHEADER => array(
+    //             'Content-Type: application/json',
+    //             ),
+    //             ));
+    //             $profile_response = curl_exec($curl);
+    //             $profile_error = curl_error($curl);
+    //             curl_close($curl);
+    //             if ($profile_error) {
 
-                    return $profile_error;
-                } else {
+    //                 return $profile_error;
+    //             } else {
                     
-                    $getUserProfileData = json_decode($profile_response);
+    //                 $getUserProfileData = json_decode($profile_response);
 
-                    if(array_key_exists('first_name', $getUserProfileData)) {
+    //                 if(array_key_exists('first_name', $getUserProfileData)) {
 
-                    $getBroadcastuser = FacebookBoardcastUserInfo::where('fb_id', $getUserProfileData->id)->first();
+    //                 $getBroadcastuser = FacebookBoardcastUserInfo::where('fb_id', $getUserProfileData->id)->first();
 
-                    if(count($getBroadcastuser) == 0) {
+    //                 if(count($getBroadcastuser) == 0) {
 
-                        FacebookBoardcastUserInfo::create([
-                            'first_name' => $getUserProfileData->first_name,
-                            'last_name' =>  $getUserProfileData->last_name,
-                            'profile_picture' => $getUserProfileData->profile_pic,
-                            'fb_id' => $getUserProfileData->id,
-                            'psid' => $psid
-                        ]);
-                    }
+    //                     FacebookBoardcastUserInfo::create([
+    //                         'first_name' => $getUserProfileData->first_name,
+    //                         'last_name' =>  $getUserProfileData->last_name,
+    //                         'profile_picture' => $getUserProfileData->profile_pic,
+    //                         'fb_id' => $getUserProfileData->id,
+    //                         'psid' => $psid
+    //                     ]);
+    //                 }
                     
-                } else {
+    //             } else {
 
                     
-                }
-            }
-    }
+    //             }
+    //         }
+    // }
 
 
     public function boadcast(Request $request) {
@@ -480,24 +480,12 @@ class HomeController extends Controller
 
                 foreach ($getResult as $userInfo)
                 {
-                    $this->sendMessageText($userInfo, $getMessage);
+                    $this->sendMessageText($userInfo, $getMessage, $page_access_token);
                     
                 }         
             }
 
-        function sendMessageText($userId, $getMessage) {
-
-            $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
-
-            if(count($getPageAccessToken) > 0 ) 
-            {
-
-                $page_access_token = $getPageAccessToken['page_access_token'];
-
-            } else {
-
-                $page_access_token = ''; 
-            }
+        function sendMessageText($userId, $getMessage, $page_access_token) {
 
             $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$page_access_token;
                     $ch = curl_init($url);
