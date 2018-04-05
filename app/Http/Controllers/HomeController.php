@@ -589,5 +589,4 @@ class HomeController extends Controller
             FacebookBoardcastUserInfo::truncate();
         }   
     }
-
 }
