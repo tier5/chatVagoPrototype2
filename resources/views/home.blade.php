@@ -375,7 +375,7 @@
 
             <div class="form-group row mb-0">
               <div class="col-md-8 offset-md-5">
-                <a href="" class="btn btn-info btn-lg" id="downloadImg" name="code.png" download="code" id="downloadImg">Download</a>
+                <a href="" class="btn btn-info btn-lg" id="downloadImg" name="code.jpg" download="code.jpg" id="downloadImg">Download</a>
 
                <!--  <button class="btn btn-info btn-lg" id="downloadImageFile">Download</button> -->
               </div>
