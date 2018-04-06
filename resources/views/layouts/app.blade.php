@@ -10,124 +10,89 @@
 
     <title>{{ config('app.name', 'Chat Vago') }}</title>
 
-    <!-- Scripts -->
-   
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
-
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url('/') }}/css/style.css">
+    <!--     <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{{ asset('/vendor/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/vendor/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/css/sb-admin.css') }}">
+    <link  href="{{ asset('/vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="{{ url('/') }}/css/style.css"> -->
+        <!-- Bootstrap core JavaScript-->
+        <script src="{{ asset('/vendor/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="{{ asset('vendor/datatables/jquery.dataTables.js') }}"></script>
+        <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.js') }}"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="{{ asset('js/sb-admin.min.js')}}"></script>
+        <!-- Custom scripts for this page-->
+        <script src="{{ asset('js/sb-admin-datatables.min.js')}}"></script>
+    <!-- Scripts -->
+    <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
     
 </head>
 
-<style>
-
-
-            html{font-family:sans-serif;}
-            .full-height {
-                height: 100vh;
-            }
-
-            .modal-title {
-            margin: 0;
-            line-height: 1.42857143;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Chat Vago') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
-                            <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
+<body class="fixed-nav sticky-footer bg-dark">
+<!--     <div id="app"> -->
+        @guest
             @yield('content')
-        </main>
-    </div>
+        @else
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+            <a class="navbar-brand" href="{{ url('/') }}"> {{ config('app.name', 'Chat Vago') }}</a>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+              <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                  <a class="nav-link" href="{{route('home')}}">
+                    <i class="fa fa-fw fa-dashboard"></i>
+                    <span class="nav-link-text">Dashboard</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Analytics">
+                  <a class="nav-link" href="{{route('analytics')}}">
+                    <i class="fa fa-fw fa-area-chart"></i>
+                    <span class="nav-link-text">Analytics</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                  <a class="nav-link" href="{{ route('broadcastList')}}">
+                    <i class="fa fa-fw fa-sitemap"></i>
+                    <span class="nav-link-text">Braodcast</span>
+                  </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+                  <a class="nav-link" href="{{ route('messengerCode')}}">
+                    <i class="fa fa-fw fa-link"></i>
+                    <span class="nav-link-text">Messenger Code</span>
+                  </a>
+                </li>
+              </ul>
+              <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-fw fa-sign-out"></i>{{ __('Logout') }}</a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+                </form>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        <div class="content-wrapper">
+                    @yield('content')
+        <!-- /.container-fluid-->
+            <!-- /.content-wrapper-->
+            <footer class="sticky-footer">
+              <div class="container">
+                <div class="text-center">
+                  <small>Copyright © ChatVago </small>
+                </div>
+              </div>
+            </footer>
+            <!-- Scroll to Top Button-->
+            <a class="scroll-to-top rounded" href="#page-top">
+              <i class="fa fa-angle-up"></i>
+            </a>
+        </div>
+        @endguest
+    
 </body>
 </html>

@@ -25,9 +25,15 @@ Auth::routes();
 Route::get('/', function () {
     return redirect()->route('login');
 });
+
+//Route to show Pages
+Route::get('/messengerCode', 'MessengerCodeController@index')->name('messengerCode');
+Route::get('/broadcastList', 'BoardCastController@index')->name('broadcastList');
+// Route for each operation 
+// 
 Route::any('/', 'HomeController@index')->name('home');
 
-Route::any('/getAnalytics', 'HomeController@getAnalytics')->name('getAnalytics');
+Route::any('/analytics', 'AnalyticsController@index')->name('analytics');
 
 Route::post('/boardcast', 'HomeController@boadcast')->name('boardcast');
 

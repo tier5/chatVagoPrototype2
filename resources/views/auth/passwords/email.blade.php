@@ -1,7 +1,39 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
+    <div class="card card-login mx-auto mt-5">
+      <div class="card-header">{{ __('Reset Password') }}</div>
+      <div class="card-body">
+        @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif        
+        <div class="text-center mt-4 mb-5">
+          <h4>Forgot your password?</h4>
+          <p>Enter your email address and we will send you instructions on how to reset your password.</p>
+        </div>
+        <form method="POST" action="{{ route('password.email') }}">
+          <div class="form-group">
+            <input class="form-control" id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required aria-describedby="emailHelp" placeholder="Enter email address">
+            @if ($errors->has('email'))
+                <span class="invalid-feedback">
+                    <strong>{{ $errors->first('email') }}</strong>
+                </span>
+            @endif
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">{{ __('Send Password Reset Link') }}</button>
+        </form>
+        <div class="text-center">
+          <a class="d-block small mt-3" href="{{ route('register') }}">Register an Account</a>
+          <a class="d-block small" href="{{ route('login') }}">Login Page</a>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -43,5 +75,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 @endsection
