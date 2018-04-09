@@ -178,7 +178,7 @@ class AnalyticsController extends Controller
         
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        	CURLOPT_URL => "https://graph.facebook.com/v2.12/me/access_token/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_blocked_conversations_unique",
+        	CURLOPT_URL => "https://graph.facebook.com/v2.12/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_blocked_conversations_unique",
         	CURLOPT_RETURNTRANSFER => true,
         	CURLOPT_ENCODING => "",
         	CURLOPT_TIMEOUT => 30000,
