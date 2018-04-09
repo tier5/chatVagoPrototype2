@@ -34,10 +34,17 @@ class HomeController extends Controller
         $pageScopeUserId = '';
 
         $page_access_token = trim($request->get('page_access_token'));
-
+        
         $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
 
-        if ($request->method() == 'POST') {
+        if(count($getPageAccessToken) > 0 ){
+
+            $page_access_token = $getPageAccessToken['page_access_token'];
+        }
+
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            $page_access_token = trim($request->get('page_access_token'));
 
             if(count($getPageAccessToken) == 0 ){
 

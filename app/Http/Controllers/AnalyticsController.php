@@ -45,10 +45,9 @@ class AnalyticsController extends Controller
         	}
 
         $todayTime = time();
+  
 
-        
-
-        if($request->method() == 'POST') {
+        if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 			$oneWeekTime = trim($request->get('dateRange'));
 
@@ -64,6 +63,7 @@ class AnalyticsController extends Controller
 
 			$untilTime = strtotime("-1 day");
 			}
+
 
     	} else {
 

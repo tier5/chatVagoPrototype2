@@ -33,10 +33,10 @@ Route::get('/broadcastList', 'BoardCastController@index')->name('broadcastList')
 // 
 Route::any('/', 'HomeController@index')->name('home');
 
-Route::any('/analytics', 'AnalyticsController@index')->name('analytics');
+Route::any('/analytics/{page_id?}', 'AnalyticsController@index')->name('analytics');
 
 Route::post('/boardcast', 'HomeController@boadcast')->name('boardcast');
 
-Route::post('/messenger_image', 'HomeController@getMessengerImage')->name('messenger_image');
+Route::post('/messenger_image', 'MessengerCodeController@getMessengerImage')->name('messenger_image');
 
 Route::any('/deleteusers', 'HomeController@deleteUserRecords')->name('deleteusers');

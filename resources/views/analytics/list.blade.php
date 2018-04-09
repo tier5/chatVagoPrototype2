@@ -12,16 +12,23 @@
         <div class="card-header">
           <i class="fa fa-area-chart"></i> Analytics</div>
         <div class="card-body">
+          <form action="{{route('analytics') }}" method="POST" id="myForm">
+                    @csrf
               <div class="form-group row">
-                <label for="name" class="col-md-11 col-form-label text-md-right">{{ __('Date Rang') }}</label>
+                <label for="name" class="col-md-10 col-form-label text-md-right">{{ __('Date range') }}</label>
                 <div class="float-lg-right">
+                  
                   <select id="dateRange" name="dateRange" class="form-control">
                     <option value="1day" @if($oneWeekTime == '1day') selected="selected" @endif>1 Day</option>
                     <option value="7days" @if($oneWeekTime == '7days') selected="selected" @endif>7 Days</option>
                     <option value="1month" @if($oneWeekTime == '1month') selected="selected" @endif>1 Month</option>
                   </select>
+                 
                 </div>
+                <button type="submit" class="btn btn-primary" style="margin-left: 10px;">Submit</button>
+                </form>
               </div>
+
               <div class="loader" id="modalLoader" style="display: none;"></div>
               <div class="table-responsive">
                 <table class="table table-bordered" width="100%" cellspacing="0">
@@ -86,7 +93,7 @@
                           @php($conversations_unique_total = 0)
                           @foreach ($page_messages_new_conversations_unique as $key => $new_conversations_unique)
                           <tr>
-                            <th scope="row">{{date('Y-m-d',strtotime($new_conversations_unique['end_time']))}}</th>
+                            <td scope="row">{{date('Y-m-d',strtotime($new_conversations_unique['end_time']))}}</td>
                             <td>{{(array_key_exists('value', $new_conversations_unique) == '') ? 0 : $new_conversations_unique['value'] }}</td>
                             @php($conversations_unique_total += (array_key_exists('value', $new_conversations_unique) == '') ? 0 : $new_conversations_unique['value'])
                           </tr>
@@ -209,23 +216,7 @@
     </div>
     <script type="text/javascript">
 
-      $(document).ready(function(){
-
-        $('#dateRange').change(function() {
-
-        var analyticURL = "{{route('analytics') }}";
-        var dateRange = $('#dateRange').val();
-        $('#modalLoader').css('display', 'block');
-          $.ajax({
-            type:'POST',
-            url:analyticURL,
-            data: {_token: '{{csrf_token()}}', dateRange: dateRange},
-            success:function(data){
-            $('#modalLoader').css('display', 'hide');
-             window.location.reload();
-            }
-          });
-        });
+      $(document).ready(function(){ 
 
       });
     </script>

@@ -22,7 +22,8 @@ $(document).on('click', '.pageLi', function () {
     $('.opendropdown').trigger('click');
     page_id = $(this).attr('data-page-id');
     page_access_token  = $(this).attr('data-access-token');
-    window,location.href = '/home/'+ page_id;
+    //window,location.href = '/'+ page_id;
+    window,location.href ='/analytics/' + page_id;
      
 });
 

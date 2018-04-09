@@ -46,11 +46,11 @@
                       </div>
                     </div>
                   </div>
-                  <div class="modal-footer">
-                   <button type="button" class="btn btn-info btn-lg" data-dismiss="modal">Close</button>
-                 </div>
                  <div class="loader-div" style="display:none;"></div>
                  <div class="transparent" style="display:none;"></div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                  </div>
                </div>
             </div>
           </div>
