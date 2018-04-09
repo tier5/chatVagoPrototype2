@@ -91,7 +91,7 @@
       
       $('#sendMessage').click(function(){
 
-        var sendURL = '{{route('boardcast')}}';
+        var sendURL = "{{route('boardcast')}}";
         var selectedUser = [];
         var getMessage = $('#send_message_text').val();
         $.each($("input[name='checkUser']:checked"), function(){
