@@ -28,15 +28,15 @@ Route::get('/', function () {
 
 //Route to show Pages
 Route::get('/messengerCode', 'MessengerCodeController@index')->name('messengerCode');
-Route::get('/broadcastList', 'BoardCastController@index')->name('broadcastList');
+Route::get('/broadcastList', 'BoardcastController@index')->name('broadcastList');
 // Route for each operation 
 // 
 Route::any('/', 'HomeController@index')->name('home');
 
 Route::any('/analytics/{page_id?}', 'AnalyticsController@index')->name('analytics');
 
-Route::post('/boardcast', 'BoardCastController@boadcast')->name('boardcast');
+Route::post('/boardcast', 'BoardcastController@boadcast')->name('boardcast');
 
 Route::post('/messenger_image', 'MessengerCodeController@getMessengerImage')->name('messenger_image');
 
-Route::any('/deleteusers', 'BoardCastController@deleteUserRecords')->name('deleteusers');
+Route::any('/deleteusers', 'BoardcastController@deleteUserRecords')->name('deleteusers');
