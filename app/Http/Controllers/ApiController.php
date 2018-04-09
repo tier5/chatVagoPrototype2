@@ -31,8 +31,6 @@ class ApiController extends Controller
                 $page_access_token = ''; 
             }
 
-            dd($userId);
-
            $curl = curl_init();
                 curl_setopt_array($curl, array(
                 CURLOPT_URL => "https://graph.facebook.com/v2.12/".$psid."?fields=first_name,last_name,profile_pic&access_token=".$page_access_token."",
