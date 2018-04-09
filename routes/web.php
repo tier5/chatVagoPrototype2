@@ -35,8 +35,8 @@ Route::any('/', 'HomeController@index')->name('home');
 
 Route::any('/analytics/{page_id?}', 'AnalyticsController@index')->name('analytics');
 
-Route::post('/boardcast', 'HomeController@boadcast')->name('boardcast');
+Route::post('/boardcast', 'BoardCastController@boadcast')->name('boardcast');
 
 Route::post('/messenger_image', 'MessengerCodeController@getMessengerImage')->name('messenger_image');
 
-Route::any('/deleteusers', 'HomeController@deleteUserRecords')->name('deleteusers');
+Route::any('/deleteusers', 'BoardCastController@deleteUserRecords')->name('deleteusers');
