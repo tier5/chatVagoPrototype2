@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use Log;
 use App\Model\FacebookUserPageDetail;
 use App\Model\FacebookBoardcastUserInfo;
 use App\Model\PageAccessToken;
@@ -35,20 +36,15 @@ class AnalyticsController extends Controller
 
         $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
 
-        if(count($getPageAccessToken) > 0 )
-        	{
-        		$page_access_token = $getPageAccessToken['page_access_token'];
+        if($getPageAccessToken){
 
-        	} else {
+            $page_access_token = $getPageAccessToken['page_access_token'];
+        }
 
-        		$page_access_token = '';
-        	}
-
-        $todayTime = time();
-  
-
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+		$todayTime = time();
+		
+		if($request->isMethod('post')) {
+			
 			$oneWeekTime = trim($request->get('dateRange'));
 
 			if($oneWeekTime == "7days") {
@@ -63,9 +59,7 @@ class AnalyticsController extends Controller
 
 			$untilTime = strtotime("-1 day");
 			}
-
-
-    	} else {
+		} else {
 
     		$untilTime = strtotime("-1 day");
     	}
@@ -73,7 +67,7 @@ class AnalyticsController extends Controller
         // For page_messages_reported_conversations_by_report_type_unique
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        	CURLOPT_URL => "https://graph.facebook.com/v2.12/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_reported_conversations_by_report_type_unique",
+        	CURLOPT_URL => "https://graph.facebook.com/".env("FB_APP_GRAPH_VERSION")."/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_reported_conversations_by_report_type_unique",
         	CURLOPT_RETURNTRANSFER => true,
         	CURLOPT_ENCODING => "",
         	CURLOPT_TIMEOUT => 30000,
@@ -87,7 +81,7 @@ class AnalyticsController extends Controller
         $err1 = curl_error($curl);
         curl_close($curl);
         if ($err1) {
-        	echo "cURL Error #:" . $err1;
+			Log::info("cURL Error #:" . $err1);
         } else {
 
         	$report_type_unique = json_decode($response1, true);
@@ -110,7 +104,7 @@ class AnalyticsController extends Controller
         // For page_messages_new_conversations_unique
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        	CURLOPT_URL => "https://graph.facebook.com/v2.12/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_new_conversations_unique",
+        	CURLOPT_URL => "https://graph.facebook.com/".env("FB_APP_GRAPH_VERSION")."/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_new_conversations_unique",
         	CURLOPT_RETURNTRANSFER => true,
         	CURLOPT_ENCODING => "",
         	CURLOPT_TIMEOUT => 30000,
@@ -124,7 +118,7 @@ class AnalyticsController extends Controller
         $err2 = curl_error($curl);
         curl_close($curl);
         if ($err2) {
-        	echo "cURL Error #:" . $err2;
+			Log::info("cURL Error2 #:" . $err2);
         } else {
         	$new_conversations_unique = json_decode($response2, true);
         	if(array_key_exists('data', $new_conversations_unique)) {
@@ -141,7 +135,7 @@ class AnalyticsController extends Controller
         // For page_messages_open_conversations_unique
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        	CURLOPT_URL => "https://graph.facebook.com/v2.12/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_open_conversations_unique",
+        	CURLOPT_URL => "https://graph.facebook.com/".env("FB_APP_GRAPH_VERSION")."/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_open_conversations_unique",
         	CURLOPT_RETURNTRANSFER => true,
         	CURLOPT_ENCODING => "",
         	CURLOPT_TIMEOUT => 30000,
@@ -155,7 +149,7 @@ class AnalyticsController extends Controller
         $err3 = curl_error($curl);
         curl_close($curl);
         if ($err3) {
-        	echo "cURL Error #:" . $err3;
+			Log::info("cURL Error3 #:" . $err3);
         } else {
         	$open_conversations_unique = json_decode($response3, true);
 
@@ -178,7 +172,7 @@ class AnalyticsController extends Controller
         
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        	CURLOPT_URL => "https://graph.facebook.com/v2.12/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_blocked_conversations_unique",
+        	CURLOPT_URL => "https://graph.facebook.com/".env("FB_APP_GRAPH_VERSION")."/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_blocked_conversations_unique",
         	CURLOPT_RETURNTRANSFER => true,
         	CURLOPT_ENCODING => "",
         	CURLOPT_TIMEOUT => 30000,
@@ -193,7 +187,7 @@ class AnalyticsController extends Controller
         $err4 = curl_error($curl);
         curl_close($curl);
         if ($err4) {
-        	echo "cURL Error #:" . $err4;
+        	Log::info("cURL Error4 #:" . $err4);
         } else {
 
         	$blocked_conversations_unique = json_decode($response4, true);
@@ -219,7 +213,7 @@ class AnalyticsController extends Controller
         $curl = curl_init();
         curl_setopt_array($curl, array(
 
-        	CURLOPT_URL => "https://graph.facebook.com/v2.12/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_active_threads_unique",
+        	CURLOPT_URL => "https://graph.facebook.com/".env("FB_APP_GRAPH_VERSION")."/me/insights?access_token=".$page_access_token."&since=".$untilTime."&until=".$todayTime."&metric=page_messages_active_threads_unique",
         	CURLOPT_RETURNTRANSFER => true,
         	CURLOPT_ENCODING => "",
         	CURLOPT_TIMEOUT => 30000,
@@ -234,7 +228,7 @@ class AnalyticsController extends Controller
         $err5 = curl_error($curl);
         curl_close($curl);
         if ($err5) {
-        	echo "cURL Error #:" . $err5;
+        	Log::info("cURL Error5 #:" . $err5);
         } else {
         	$active_threads_unique = json_decode($response5, true);
 

@@ -26,7 +26,7 @@ class MessengerCodeController extends Controller
 
         $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
 
-        if(count($getPageAccessToken) > 0 ){
+        if($getPageAccessToken){
 
             $page_access_token = $getPageAccessToken['page_access_token'];
 
@@ -45,9 +45,10 @@ class MessengerCodeController extends Controller
 
 
         $messageImageData = '';
+        
         $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
 
-        if(count($getPageAccessToken) > 0 ){
+        if($getPageAccessToken){
 
             $page_access_token = $getPageAccessToken['page_access_token'];
 
@@ -64,7 +65,7 @@ class MessengerCodeController extends Controller
             $getImageSize = 1000;
         }
 
-        $url = 'https://graph.facebook.com/v2.6/me/messenger_codes?access_token='.$page_access_token;
+        $url = 'https://graph.facebook.com/'.env("FB_APP_GRAPH_VERSION").'/me/messenger_codes?access_token='.$page_access_token;
         $ch = curl_init($url);
             $jsonData = '{
                 "type": "standard",

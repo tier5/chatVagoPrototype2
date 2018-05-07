@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Log;
 use App\Model\FacebookUserPageDetail;
 use App\Model\FacebookBoardcastUserInfo;
 use App\Model\PageAccessToken;
@@ -14,26 +15,18 @@ class ApiController extends Controller
 
             $psid = trim($request->get('psid'));
 
-            // $userid = $request->input('user_id');
-
-            // dd($userid );
-           
+            $page_access_token = '';
             
             $getPageAccessToken = PageAccessToken::where('user_id', $userId)->first();
 
-            if(count($getPageAccessToken) > 0 ) 
-            {
-
+            if($getPageAccessToken) {
+                
                 $page_access_token = $getPageAccessToken['page_access_token'];
-
-            } else {
-
-                $page_access_token = ''; 
             }
 
            $curl = curl_init();
                 curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://graph.facebook.com/v2.12/".$psid."?fields=first_name,last_name,profile_pic&access_token=".$page_access_token."",
+                CURLOPT_URL => "https://graph.facebook.com/".env("FB_APP_GRAPH_VERSION")."/".$psid."?fields=first_name,last_name,profile_pic&access_token=".$page_access_token."",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_TIMEOUT => 30000,
@@ -47,10 +40,9 @@ class ApiController extends Controller
                 $profile_error = curl_error($curl);
                 curl_close($curl);
                 if ($profile_error) {
-
-                    echo  $profile_error;
+                    Log::info("Profile Error Info : " . $profile_error);
                 } else {
-                    
+                     
                     $getUserProfileData = json_decode($profile_response);
 
                     if(array_key_exists('first_name', $getUserProfileData)) {

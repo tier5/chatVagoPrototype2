@@ -16,6 +16,9 @@ class BoardcastController extends Controller
      *
      * @return void
      */
+	public $pageScopeUserId = '';
+	public $page_access_token = '';
+
     public function __construct()
     {
         $this->middleware('auth');
@@ -23,31 +26,25 @@ class BoardcastController extends Controller
 
     public function index(Request $request) {
 
-    	$pageScopeUserId = '';
-
     	$getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
 
-        if(count($getPageAccessToken) > 0 ){
+        if($getPageAccessToken){
 
-        	$page_access_token = $getPageAccessToken['page_access_token'];
-
-        } else {
-
-        	$page_access_token = '';
-        }
-
+			$page_access_token = $getPageAccessToken['page_access_token'];
+		}
+		
         if(Auth::user()->id != ''){
-
-        	$getBoardCastUser = $getBroadcastDetail = FacebookBoardcastUserInfo::where('user_id', Auth::user()->id)->get();
-
-        } else {
+			
+			$getBoardCastUser = $getBroadcastDetail = FacebookBoardcastUserInfo::where('user_id', Auth::user()->id)->get();
+		
+		} else {
 
         	$getBoardCastUser = '';
         }
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
-        	CURLOPT_URL => "https://graph.facebook.com/v2.12/me?fields=id,name&access_token=".$page_access_token."",
+        	CURLOPT_URL => "https://graph.facebook.com/".env("FB_APP_GRAPH_VERSION")."/me?fields=id,name&access_token=".$page_access_token."",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_TIMEOUT => 30000,
@@ -61,9 +58,9 @@ class BoardcastController extends Controller
         $err6 = curl_error($curl);
         curl_close($curl);
         if ($err6) {
-        	echo "cURL Error #:" . $err6;
+			Log::info("Error Info : " . $err6);
         } else {
-
+			
         	$page_scope = json_decode($response_scope, true);
 
 	        	if(array_key_exists('name', $page_scope)) {
@@ -87,13 +84,10 @@ class BoardcastController extends Controller
 
     	$getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
 
-    	if(count($getPageAccessToken) > 0 ){
+    	if($getPageAccessToken){
 
     		$page_access_token = $getPageAccessToken['page_access_token'];
 
-    	} else {
-
-    		$page_access_token = '';
     	}
 
     	$gerResult=[];
@@ -110,7 +104,7 @@ class BoardcastController extends Controller
     		$jsonData[]['message']['text'] = $getMessage;
     	}
 
-    	$url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$page_access_token;
+    	$url = 'https://graph.facebook.com/'.env("FB_APP_GRAPH_VERSION").'/me/broadcast_messages?access_token='.$page_access_token;
 
     	$ch = curl_init($url);
 
@@ -121,24 +115,20 @@ class BoardcastController extends Controller
     	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         $result = curl_exec($ch);
         $profile_error = curl_error($ch);
-        curl_close($ch);
-
-    }
+		curl_close($ch);
+	}
 
 	public function deleteUserRecords(Request $request) {
 
         $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
 
-        if(count($getPageAccessToken) > 0 ){
+        if($getPageAccessToken){
 
         	$page_access_token = $getPageAccessToken['page_access_token'];
 
-        } else {
-
-        	$page_access_token = ''; 
         }
 
-        $getDeleteResult = [];$
+        $getDeleteResult = [];
 
         $getDeleteResult = explode(",", trim($request->get('selectedUser')));
 

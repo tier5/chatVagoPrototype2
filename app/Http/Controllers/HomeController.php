@@ -37,12 +37,12 @@ class HomeController extends Controller
         
         $getPageAccessToken = PageAccessToken::where('user_id', Auth::user()->id)->first();
 
-        if(count($getPageAccessToken) > 0 ){
+        if($getPageAccessToken){
 
             $page_access_token = $getPageAccessToken['page_access_token'];
         }
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if($request->isMethod('post')) {
 
             $page_access_token = trim($request->get('page_access_token'));
 
@@ -61,7 +61,7 @@ class HomeController extends Controller
 
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://graph.facebook.com/v2.12/me?fields=id,name&access_token=".$page_access_token."",
+                CURLOPT_URL => "https://graph.facebook.com/".env("FB_APP_GRAPH_VERSION")."/me?fields=id,name&access_token=".$page_access_token."",
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => "",
                 CURLOPT_TIMEOUT => 30000,
