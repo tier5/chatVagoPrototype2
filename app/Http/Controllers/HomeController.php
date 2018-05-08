@@ -46,7 +46,7 @@ class HomeController extends Controller
 
             $page_access_token = trim($request->get('page_access_token'));
 
-            if(count($getPageAccessToken) == 0 ){
+            if($getPageAccessToken){
 
                 DB::table('page_access_token')->insert(['page_access_token' => $page_access_token, 'user_id' => Auth::user()->id]);
 

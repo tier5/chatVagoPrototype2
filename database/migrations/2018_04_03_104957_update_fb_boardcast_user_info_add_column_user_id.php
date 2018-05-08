@@ -28,6 +28,6 @@ class UpdateFbBoardcastUserInfoAddColumnUserId extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('fb_boardcast_user_info');
     }
 }
